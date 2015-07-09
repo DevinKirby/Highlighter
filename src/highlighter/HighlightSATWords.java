@@ -32,8 +32,9 @@ public class HighlightSATWords {
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					conn.getInputStream()));
-			while ((in.readLine()) != null) {
-				String[] words = in.readLine().split("\\s+");
+			String inputLine;
+			while ((inputLine = in.readLine()) != null) {
+				String[] words = inputLine.split("\\s+");
 				String newString = "";
 				for (String word : words) {
 					newString += compareURLWordsToTxt(word, satFile);
