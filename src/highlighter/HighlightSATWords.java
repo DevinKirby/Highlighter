@@ -4,7 +4,9 @@ import java.net.*;
 import java.io.*;
 
 public class HighlightSATWords {
-	
+	public static String satFile = "C:\\Users\\priya\\git\\Highlighter\\src\\SATwords.txt";
+	public static String htmlFile = "C:\\Users\\priya\\Desktop\\sample.html";
+
 	public static boolean checkURL(String testURL) {
 		boolean isValid = true;
 		try {
@@ -22,7 +24,8 @@ public class HighlightSATWords {
 		return isValid;
 	}
 
-	public static void readFromUrl(String testURL) throws IOException {
+	public static void readFromUrl(String testURL, String htmlFile)
+			throws IOException {
 		if (checkURL(testURL)) {
 			URL url = new URL(testURL);
 			URLConnection conn = url.openConnection();
@@ -33,43 +36,43 @@ public class HighlightSATWords {
 				String[] words = in.readLine().split("\\s+");
 				String newString = "";
 				for (String word : words) {
-					newString += compareURLWordsToTxt(word);
+					newString += compareURLWordsToTxt(word, satFile);
 				}
-				writeStyledLineToHTML(newString);
+				writeStyledLineToHTML(newString, htmlFile);
 			}
 
 		}
 	}
 
-	public static String compareURLWordsToTxt(String word) {
-		String file = "C:\\Users\\Conor\\git\\Highlighter\\src\\SATwords.txt";
+	public static String compareURLWordsToTxt(String word, String file) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
-			while ((reader.readLine()) != null) {
-				if (word.equalsIgnoreCase(reader.readLine().trim())) {
+			String line ="";
+			while ((line=reader.readLine()) != null) {
+				if (word.equalsIgnoreCase(line.trim())) {
 					reader.close();
-					return "<mark>" + word + "</mark>"+" ";
+					return "<mark>" + word + "</mark>" + " ";
 				}
 			}
 			reader.close();
-			return word+" ";
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found.");
-		} catch (IOException ioe) {
+			return word + " ";
+		}
+		// catch (FileNotFoundException e) {
+		// System.out.println("File not found.");
+		// }
+		catch (IOException ioe) {
 			System.out.println("Could not read from file.");
 		}
 		return null;
-		
+
 	}
 
-	private static void writeStyledLineToHTML(String newString) {
-		PrintWriter fout = null; 
-		try {
-			fout = new PrintWriter(new BufferedOutputStream(new FileOutputStream("C:\\Users\\priya\\Desktop\\sample.html",true)));
-			fout.write(newString);
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found.");
-		}
+	public static void writeStyledLineToHTML(String newString, String FileName)
+			throws FileNotFoundException {
+		PrintWriter fout = null;
+		fout = new PrintWriter(new BufferedOutputStream(new FileOutputStream(
+				FileName, true)));
+		fout.write(newString);
 		fout.close();
 	}
 
