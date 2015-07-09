@@ -9,12 +9,24 @@ public class HighlightSATWordsTest {
 
 	@Test
 	public void shouldReturnFalseForInvalidURL() {
-		assertEquals(false, HighlightSATWords.checkURL("https://wwww.google.com/"));
+		assertEquals(false,
+				HighlightSATWords.checkURL("http://wwww.google.com/"));
 	}
-	
+
 	@Test
 	public void shouldReturnTrueForValidURL() {
-		assertEquals(true, HighlightSATWords.checkURL("https://www.google.com/"));
+		assertEquals(true, HighlightSATWords.checkURL("http://www.google.com/"));
+	}
+
+	@Test
+	public void shouldReturnHighlightedSATWord() {
+		assertEquals("<mark>plummet</mark>",
+				HighlightSATWords.compareURLWordsToTxt("plummet"));
+	}
+
+	@Test
+	public void shouldReturnOriginalStyleForNonSATWord() {
+		assertEquals("simple", HighlightSATWords.compareURLWordsToTxt("simple"));
 	}
 
 }
