@@ -4,6 +4,7 @@ import java.net.*;
 import java.io.*;
 
 public class HighlightSATWords {
+	
 	public static boolean checkURL(String testURL) {
 		boolean isValid = true;
 		try {
@@ -47,23 +48,29 @@ public class HighlightSATWords {
 			while ((reader.readLine()) != null) {
 				if (word.equalsIgnoreCase(reader.readLine().trim())) {
 					reader.close();
-					return "<mark>" + word + "</mark>";
+					return "<mark>" + word + "</mark>"+" ";
 				}
 			}
 			reader.close();
-			return word;
+			return word+" ";
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found.");
 		} catch (IOException ioe) {
 			System.out.println("Could not read from file.");
 		}
-
 		return null;
+		
 	}
 
 	private static void writeStyledLineToHTML(String newString) {
-		// TODO Auto-generated method stub
-
+		PrintWriter fout = null; 
+		try {
+			fout = new PrintWriter(new BufferedOutputStream(new FileOutputStream("C:\\Users\\priya\\Desktop\\sample.html",true)));
+			fout.write(newString);
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		}
+		fout.close();
 	}
 
 }
