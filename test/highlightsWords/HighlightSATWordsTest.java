@@ -2,8 +2,9 @@ package highlightsWords;
 
 import static org.junit.Assert.*;
 
-import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 import highlighter.HighlightSATWords;
@@ -16,6 +17,11 @@ public class HighlightSATWordsTest {
 	public void shouldReturnFalseForInvalidURL() {
 		assertEquals(false,
 				HighlightSATWords.checkURL("http://wwww.google.com/"));
+	}
+
+	@Test
+	public void shouldReturnFalseForMalformedURL() {
+		assertEquals(false, HighlightSATWords.checkURL("wwww.google.com/"));
 	}
 
 	@Test
@@ -43,34 +49,54 @@ public class HighlightSATWordsTest {
 	}
 
 	@Test
-	public void shouldWriteToFileIfFileNameIsValid()
+	public void shouldThrowExceptionIfFileNameIsInvalid()
 			throws FileNotFoundException {
-		String testMessage = "Testing file IO";
-		String fileName = "C:\\Users\\priya\\Desktop\\test.txt";
-		HighlightSATWords.writeStyledLineToHTML(testMessage, fileName);
+		HighlightSATWords.writeStyledLineToHTML("Test String", "dummy");
+	}
+
+	@Test
+	public void shouldReadFromUrlAndWriteToFile() throws IOException {
+		String testUrl = "http://www.oracle.com";
+		String fileName = "C:\\Users\\priya\\Desktop\\test.html";
+		HighlightSATWords.readFromUrl(testUrl, fileName);
 		int fileLength = 0;
 		try {
-			FileInputStream in = new FileInputStream(fileName);
-			if (in.read() != -1) {
+			BufferedReader br = new BufferedReader(new FileReader(fileName));
+			if (br.readLine() != null) {
 				fileLength++;
-				in.close();
 			}
+			br.close();
+
 		} catch (IOException ioe) {
 			System.out.println("Error reading file");
 		}
 		assertTrue(fileLength > 0);
 	}
 
-	@Test
-	public void shouldThrowExceptionIfFileNameIsInvalid()
-			throws FileNotFoundException {
-		HighlightSATWords.writeStyledLineToHTML("Test String", "dummy");
+	@Test(expected = IOException.class)
+	public void shouldThrowExceptionForBadUrl() throws IOException {
+		String fileName = "C:\\Users\\priya\\Desktop\\test.html";
+		HighlightSATWords.readFromUrl("www.someurl.com", fileName);
 	}
-	
-//	@Test
-//	public void shouldReadFromUrlAndWriteToFileIfFileNameIsValid() {
-//		String testUrl = "Test URL";
-//		String fileName = ;
-//	}
 
 }
+
+// @Test
+// public void shouldWriteToFileIfFileNameIsValid()
+// throws FileNotFoundException {
+// String testMessage = "Testing file IO";
+// String fileName = "C:\\Users\\priya\\Desktop\\test.txt";
+// HighlightSATWords.writeStyledLineToHTML(testMessage, fileName);
+// int fileLength = 0;
+// try {
+// BufferedReader br = new BufferedReader(new FileReader(fileName));
+// if (br.readLine() != null) {
+// fileLength++;
+// }
+// br.close();
+//
+// } catch (IOException ioe) {
+// System.out.println("Error reading file");
+// }
+// assertTrue(fileLength > 0);
+// }
