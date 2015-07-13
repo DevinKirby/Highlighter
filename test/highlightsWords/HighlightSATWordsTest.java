@@ -14,18 +14,18 @@ import org.junit.Test;
 public class HighlightSATWordsTest {
 
 	@Test
-	public void shouldReturnFalseForInvalidURL() {
+	public void shouldReturnFalseForInvalidURL() throws Exception {
 		assertEquals(false,
 				HighlightSATWords.checkURL("http://wwww.google.com/"));
 	}
 
 	@Test
-	public void shouldReturnFalseForMalformedURL() {
+	public void shouldReturnFalseForMalformedURL() throws Exception {
 		assertEquals(false, HighlightSATWords.checkURL("wwww.google.com/"));
 	}
 
 	@Test
-	public void shouldReturnTrueForValidURL() {
+	public void shouldReturnTrueForValidURL() throws Exception {
 		assertEquals(true, HighlightSATWords.checkURL("http://www.google.com/"));
 	}
 
@@ -55,9 +55,9 @@ public class HighlightSATWordsTest {
 	}
 
 	@Test
-	public void shouldReadFromUrlAndWriteToFile() throws IOException {
+	public void shouldReadFromUrlAndWriteToFile() throws Exception {
 		String testUrl = "http://www.oracle.com";
-		String fileName = "C:\\Users\\priya\\Desktop\\test.html";
+		String fileName = "C:\\Users\\devin_000\\Desktop\\test.html";
 		HighlightSATWords.readFromUrl(testUrl, fileName);
 		int fileLength = 0;
 		try {
@@ -74,7 +74,7 @@ public class HighlightSATWordsTest {
 	}
 
 	@Test(expected = IOException.class)
-	public void shouldThrowExceptionForBadUrl() throws IOException {
+	public void shouldThrowExceptionForBadUrl() throws Exception {
 		String fileName = "C:\\Users\\priya\\Desktop\\test.html";
 		HighlightSATWords.readFromUrl("www.someurl.com", fileName);
 	}
